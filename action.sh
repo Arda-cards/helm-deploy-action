@@ -71,9 +71,15 @@ set -u
 echo "🚀🚀🚀 ==================== 🚀🚀🚀"
 
 set -vx
+namespace="${phase}-${module_name}"
+
+kubectl create namespace "${namespace}"
+kubectl get secret regcred --namespace=default --export -o yaml | \
+  kubectl apply --namespace="${namespace}" -f -
+
 /usr/local/bin/helm upgrade --install --render-subchart-notes \
   ${dry_run:+--dry-run} ${verbose:+--debug} \
-  --create-namespace --namespace "${phase}-${module_name}" \
+  --namespace "${namespace}" \
   --atomic ${clean_up:+--cleanup-on-fail} \
   --timeout "${timeout}" \
   --values "src/main/helm/values-${phase}.yaml" \
