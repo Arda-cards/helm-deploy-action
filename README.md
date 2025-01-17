@@ -59,6 +59,7 @@ jobs:
           module_name: <insert your module name here>
           phase: "prod"
 ```
+
 ## Permission Required
 
 ```yaml
