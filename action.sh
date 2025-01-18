@@ -65,14 +65,12 @@ echo "${github_token}" | helm registry login ghcr.io -u $ --password-stdin
 
 echo "🚀🚀🚀 Upgrading ${phase} in ${cluster_name} 🚀🚀🚀"
 echo "${chart_name}:${chart_version}"
-set +u
-[ "${dry_run}" ] && echo "🟧🟧🟧 dry run 🟧🟧🟧"
-set -u
+[ "${dry_run:-false}" = "false" ] && echo "🟧🟧🟧 dry run 🟧🟧🟧"
 echo "🚀🚀🚀 ==================== 🚀🚀🚀"
 
 set -vx
 namespace="${phase}-${module_name}"
-if [ "${dry_run}" ]; then
+if [ "${dry_run:-false}" = "false" ]; then
   /usr/local/bin/kubectl create namespace "${namespace}"
   /usr/local/bin/kubectl get secret regcred --namespace=default --export -o yaml |
     /usr/local/bin/kubectl apply --namespace="${namespace}" -f -
