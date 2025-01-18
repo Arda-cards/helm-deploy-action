@@ -72,10 +72,11 @@ echo "🚀🚀🚀 ==================== 🚀🚀🚀"
 
 set -vx
 namespace="${phase}-${module_name}"
-
-kubectl create namespace "${namespace}"
-kubectl get secret regcred --namespace=default --export -o yaml | \
-  kubectl apply --namespace="${namespace}" -f -
+if [ "${dry_run}" ]; then
+  /usr/local/bin/kubectl create namespace "${namespace}"
+  /usr/local/bin/kubectl get secret regcred --namespace=default --export -o yaml |
+    /usr/local/bin/kubectl apply --namespace="${namespace}" -f -
+fi
 
 /usr/local/bin/helm upgrade --install --render-subchart-notes \
   ${dry_run:+--dry-run} ${verbose:+--debug} \
