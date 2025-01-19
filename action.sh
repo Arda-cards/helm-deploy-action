@@ -73,8 +73,9 @@ namespace="${phase}-${module_name}"
 if [ "${dry_run:-false}" = "false" ]; then
   /usr/local/bin/kubectl create namespace "${namespace}" --dry-run=client -o yaml |
     /usr/local/bin/kubectl apply -f -
-  /usr/local/bin/kubectl get secret regcred --namespace=default -o yaml |
-    sed "s/namespace: default/namespace: ${namespace}/g" |
+
+  /usr/local/bin/kubectl get secret regcred --namespace=default -o json |
+    /usr/local/bin/jq 'del(.metadata["namespace","creationTimestamp","resourceVersion","selfLink","uid"])' |
     /usr/local/bin/kubectl apply --namespace="${namespace}" -f -
 fi
 
