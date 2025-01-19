@@ -13,7 +13,7 @@ MD004: false                  # Unordered list style
 MD007:
   indent: 2                   # Unordered list indentation
 MD013:
-  line_length: 400            # Line length 80 is far too short
+  line_length: 255            # Line length 80 is far too short
 MD024:                        # duplicate headings
   allow_different_nesting: true
   siblings_only: true
@@ -22,5 +22,8 @@ MD026:
 MD029: false                  # Ordered list item prefix
 MD033: false                  # Allow inline HTML
 MD036: false                  # Emphasis used instead of a heading
-
+MD049:
+  style: asterisk
+MD050:
+  style: asterisk
 blank_lines: false            # Error on blank lines
