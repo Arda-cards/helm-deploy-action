@@ -18,6 +18,12 @@ Categories, defined in [changemap.json](.github/clq/changemap.json):
   - `Fixed` for any bugfixes.
   - `Security` in case of vulnerabilities.
 
+## [1.1.0] - 2025-01-17
+
+### Added
+
+- Pass `global.AWS_REGION` to helm
+
 ## [1.0.0] - 2025-01-17
 
 ### Added
