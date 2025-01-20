@@ -85,5 +85,6 @@ fi
   --atomic ${clean_up:+--cleanup-on-fail} \
   --timeout "${timeout}" \
   --values "src/main/helm/values-${phase}.yaml" \
-  --set "global.CLUSTER_IAM=arn:aws:iam::${cluster_iam}:" --set "global.phase=${phase}" \
+  --set "global.CLUSTER_IAM=arn:aws:iam::${cluster_iam}:" --set "global.AWS_REGION=${aws_region}" \
+  --set "global.phase=${phase}" \
   --version "${chart_version}" "${module_name}" "${helm_registry}/${chart_name}"
