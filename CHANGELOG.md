@@ -18,6 +18,12 @@ Categories, defined in [changemap.json](.github/clq/changemap.json):
   - `Fixed` for any bugfixes.
   - `Security` in case of vulnerabilities.
 
+## [1.2.0] - 2025-03-06
+
+### Added
+
+- Run in verbose/debug mode when the workflow runs in debug mode; this mode propagates to helm execution.
+
 ## [1.1.0] - 2025-01-17
 
 ### Added

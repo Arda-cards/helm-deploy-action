@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 
-set -eu
+if [ "${RUNNER_DEBUG}" == 1 ]; then
+  set -xv
+  readonly verbose=true
+fi
+set -u
 
 for i in "$@"; do
   case $i in
@@ -44,8 +48,9 @@ for i in "$@"; do
     readonly timeout="${i#*=}"
     ;;
   # if VERBOSE is true, create the variable, other recognize that it exists but without creating the variable
+  # Overridden by GitHub Workflow's verbosity
   VERBOSE=true)
-    readonly verbose=true
+    [ ! -v verbose ] && readonly verbose=true
     ;;
   VERBOSE=*) ;;
   *)
