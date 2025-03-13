@@ -23,6 +23,7 @@ Categories, defined in [changemap.json](.github/clq/changemap.json):
 ### Added
 
 - Run in verbose/debug mode when the workflow runs in debug mode; this mode propagates to helm execution.
+- Logs the aws caller identity in verbose mode
 
 ## [1.1.0] - 2025-01-17
 

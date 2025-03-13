@@ -60,6 +60,8 @@ for i in "$@"; do
   esac
 done
 
+[ "${verbose:-false}" = "true" ] && aws sts get-caller-identity
+
 /usr/local/bin/aws eks --region "${aws_region}" update-kubeconfig --name "${cluster_name}"
 cluster_iam=$(
   aws eks describe-cluster --name "${cluster_name}" |
