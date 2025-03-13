@@ -18,7 +18,11 @@ Categories, defined in [changemap.json](.github/clq/changemap.json):
   - `Fixed` for any bugfixes.
   - `Security` in case of vulnerabilities.
 
-## [1.2.0] - 2025-03-06
+## [2.0.0] - 2025-03-13
+
+### Changed
+
+- The secret to access to access the GitHub OCI registry is now named `ghcr-secret`.
 
 ### Added
 
