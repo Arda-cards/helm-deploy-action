@@ -22,7 +22,8 @@ Categories, defined in [changemap.json](.github/clq/changemap.json):
 
 ### Changed
 
-- The secret to access to access the GitHub OCI registry is now named `ghcr-secret`.
+- CLUSTER_IAM does not end with trailing `:`
+- The secret to access the GitHub OCI registry is now named `ghcr-secret`.
 
 ### Added
 
