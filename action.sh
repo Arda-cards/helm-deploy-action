@@ -75,6 +75,13 @@ echo "${chart_name}:${chart_version}"
 [ "${dry_run:-false}" = "false" ] && echo "🟧🟧🟧 dry run 🟧🟧🟧"
 echo "🚀🚀🚀 ==================== 🚀🚀🚀"
 
+waitOrAtomic=()
+if [ "${clean_up:-false}" = "false" ]; then
+  waitOrAtomic+=("--wait")
+else
+  waitOrAtomic+=("--atomic" "--cleanup-on-fail")
+fi
+
 set -vx
 namespace="${phase}-${module_name}"
 if [ "${dry_run:-false}" = "false" ]; then
@@ -87,9 +94,8 @@ if [ "${dry_run:-false}" = "false" ]; then
 fi
 
 /usr/local/bin/helm upgrade --install --render-subchart-notes \
-  ${dry_run:+--dry-run} ${verbose:+--debug} \
+  ${dry_run:+--dry-run} ${verbose:+--debug} "${waitOrAtomic[@]}" \
   --namespace "${namespace}" \
-  --atomic ${clean_up:+--cleanup-on-fail} \
   --timeout "${timeout}" \
   --values "src/main/helm/values-${phase}.yaml" \
   --set "global.CLUSTER_IAM=arn:aws:iam::${cluster_iam}" --set "global.AWS_REGION=${aws_region}" \

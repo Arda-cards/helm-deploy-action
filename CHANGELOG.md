@@ -18,7 +18,7 @@ Categories, defined in [changemap.json](.github/clq/changemap.json):
   - `Fixed` for any bugfixes.
   - `Security` in case of vulnerabilities.
 
-## [2.0.0] - 2025-03-13
+## [2.0.0] - 2025-03-17
 
 ### Changed
 
@@ -29,6 +29,10 @@ Categories, defined in [changemap.json](.github/clq/changemap.json):
 
 - Run in verbose/debug mode when the workflow runs in debug mode; this mode propagates to helm execution.
 - Logs the aws caller identity in verbose mode
+
+### Fixed
+
+- The `clean-up` option should leave what was installed; it now triggers `--wait` instead of `--atomic`
 
 ## [1.1.0] - 2025-01-17
 
