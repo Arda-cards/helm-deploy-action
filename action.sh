@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 
-set -eu
+if [ "${RUNNER_DEBUG}" == 1 ]; then
+  set -xv
+  readonly verbose=true
+fi
+set -u
 
 for i in "$@"; do
   case $i in
@@ -44,8 +48,9 @@ for i in "$@"; do
     readonly timeout="${i#*=}"
     ;;
   # if VERBOSE is true, create the variable, other recognize that it exists but without creating the variable
+  # Overridden by GitHub Workflow's verbosity
   VERBOSE=true)
-    readonly verbose=true
+    [ ! -v verbose ] && readonly verbose=true
     ;;
   VERBOSE=*) ;;
   *)
@@ -54,6 +59,8 @@ for i in "$@"; do
     ;;
   esac
 done
+
+[ "${verbose:-false}" = "true" ] && aws sts get-caller-identity
 
 /usr/local/bin/aws eks --region "${aws_region}" update-kubeconfig --name "${cluster_name}"
 cluster_iam=$(
@@ -68,23 +75,29 @@ echo "${chart_name}:${chart_version}"
 [ "${dry_run:-false}" = "false" ] && echo "🟧🟧🟧 dry run 🟧🟧🟧"
 echo "🚀🚀🚀 ==================== 🚀🚀🚀"
 
+waitOrAtomic=()
+if [ "${clean_up:-false}" = "false" ]; then
+  waitOrAtomic+=("--wait")
+else
+  waitOrAtomic+=("--atomic" "--cleanup-on-fail")
+fi
+
 set -vx
 namespace="${phase}-${module_name}"
 if [ "${dry_run:-false}" = "false" ]; then
   /usr/local/bin/kubectl create namespace "${namespace}" --dry-run=client -o yaml |
     /usr/local/bin/kubectl apply -f -
 
-  /usr/local/bin/kubectl get secret regcred --namespace=default -o json |
+  /usr/local/bin/kubectl get secret ghcr-secret --namespace=default -o json |
     /usr/local/bin/jq 'del(.metadata["namespace","creationTimestamp","resourceVersion","selfLink","uid"])' |
     /usr/local/bin/kubectl apply --namespace="${namespace}" -f -
 fi
 
 /usr/local/bin/helm upgrade --install --render-subchart-notes \
-  ${dry_run:+--dry-run} ${verbose:+--debug} \
+  ${dry_run:+--dry-run} ${verbose:+--debug} "${waitOrAtomic[@]}" \
   --namespace "${namespace}" \
-  --atomic ${clean_up:+--cleanup-on-fail} \
   --timeout "${timeout}" \
   --values "src/main/helm/values-${phase}.yaml" \
-  --set "global.CLUSTER_IAM=arn:aws:iam::${cluster_iam}:" --set "global.AWS_REGION=${aws_region}" \
+  --set "global.CLUSTER_IAM=arn:aws:iam::${cluster_iam}" --set "global.AWS_REGION=${aws_region}" \
   --set "global.phase=${phase}" \
   --version "${chart_version}" "${module_name}" "${helm_registry}/${chart_name}"
