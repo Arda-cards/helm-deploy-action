@@ -26,7 +26,7 @@ for i in "$@"; do
   CLUSTER_NAME=*)
     readonly cluster_name="${i#*=}"
     ;;
-  # if DRY_RUN is true, create the variable, other recognize that it exists but without creating the variable
+  # if DRY_RUN is true, create the variable, otherwise recognize that it exists but without creating the variable
   DRY_RUN=true)
     readonly dry_run=true
     ;;
@@ -41,13 +41,16 @@ for i in "$@"; do
   MODULE_NAME=*)
     readonly module_name="${i#*=}"
     ;;
+  NAMESPACE=*)
+    readonly namespace="${i#*=}"
+    ;;
   PHASE=*)
     readonly phase="${i#*=}"
     ;;
   TIMEOUT=*)
     readonly timeout="${i#*=}"
     ;;
-  # if VERBOSE is true, create the variable, other recognize that it exists but without creating the variable
+  # if VERBOSE is true, create the variable, otherwise recognize that it exists but without creating the variable
   # Overridden by GitHub Workflow's verbosity
   VERBOSE=true)
     [ ! -v verbose ] && readonly verbose=true
@@ -83,7 +86,6 @@ else
 fi
 
 set -vx
-namespace="${phase}-${module_name}"
 if [ "${dry_run:-false}" = "false" ]; then
   /usr/local/bin/kubectl create namespace "${namespace}" --dry-run=client -o yaml |
     /usr/local/bin/kubectl apply -f -

@@ -18,6 +18,12 @@ Categories, defined in [changemap.json](.github/clq/changemap.json):
   - `Fixed` for any bugfixes.
   - `Security` in case of vulnerabilities.
 
+## [2.1.0] - 2025-03-31
+
+### Added
+
+- New optional parameter `namespace`; it defaults to <phase>-<module_name>.
+
 ## [2.0.0] - 2025-03-17
 
 ### Changed
