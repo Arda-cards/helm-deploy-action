@@ -22,7 +22,7 @@ Categories, defined in [changemap.json](.github/clq/changemap.json):
 
 ### Added
 
-- New optional parameter `namespace`; it defaults to <phase>-<module_name>.
+- New optional parameter `namespace`; it defaults to *phase*`-`*module_name*.
 
 ## [2.0.0] - 2025-03-17
 
