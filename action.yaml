@@ -32,6 +32,10 @@ inputs:
     description: "The name of the module being deployed, it is the helm release name;
                   it also serves as the default base name for the kubernetes namespace. "
     required: true
+  namespace:
+    description: "The name of the namespace to deploy to. It defaults to <phase>-<module_name>."
+    required: false
+    default: ""
   phase:
     description: "The phase in the deployment pipeline (dev, prod, ...)"
     required: true
@@ -56,6 +60,7 @@ runs:
     - "GITHUB_TOKEN=${{ inputs.github_token }}"
     - "HELM_REGISTRY=${{ inputs.helm_registry }}"
     - "MODULE_NAME=${{ inputs.module_name }}"
+    - "NAMESPACE=${{ inputs.namespace && inputs.namespace || format('{0}-{1}', inputs.phase, inputs.module_name ) }}"
     - "PHASE=${{ inputs.phase }}"
     - "TIMEOUT=${{ inputs.timeout }}"
     - "VERBOSE=${{ inputs.verbose }}"
