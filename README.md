@@ -14,7 +14,10 @@ The phases can map to one or many aws accounts and clusters.
 In order to support the case of all phases into a single cluster, a module is deployed to a namespace that identify both the module and the phase.
 The naming pattern will be `<phase>-<module name>`.
 
-This action expects configuration values for the chart for the *phase* in `src/main/helm/values-${phase}.yaml`
+This action expects configuration values for the chart for the *phase* in `src/main/helm/values-${phase}.yaml`.
+
+This action supports a 2nd configuration values to be used. This is extending, not replacing, the default value files and is
+intended for deployment pipeline tha need to extract values from their environment at deployment time.
 
 ## Arguments
 

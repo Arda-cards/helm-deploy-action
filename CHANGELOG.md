@@ -18,6 +18,12 @@ Categories, defined in [changemap.json](.github/clq/changemap.json):
   - `Fixed` for any bugfixes.
   - `Security` in case of vulnerabilities.
 
+## [2.2.0] - 2025-04-16
+
+### Added
+
+- New optional parameter `value_file`; use it to add a value file to the helm deployment command.
+
 ## [2.1.0] - 2025-03-31
 
 ### Added

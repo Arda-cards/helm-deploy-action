@@ -43,6 +43,10 @@ inputs:
     description: "time to wait for the deployment to succeed (a Go duration, default 5m0s)"
     required: false
     default: "5m0s"
+  value_file:
+    description: "name of a file containing additional values for helm"
+    required: false
+    default: ""
   verbose:
     description: "enable verbose output"
     required: false
@@ -63,4 +67,5 @@ runs:
     - "NAMESPACE=${{ inputs.namespace && inputs.namespace || format('{0}-{1}', inputs.phase, inputs.module_name ) }}"
     - "PHASE=${{ inputs.phase }}"
     - "TIMEOUT=${{ inputs.timeout }}"
+    - "VALUE_FILE=${{ inputs.value_file }}"
     - "VERBOSE=${{ inputs.verbose }}"
