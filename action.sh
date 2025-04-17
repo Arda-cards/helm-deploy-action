@@ -92,15 +92,6 @@ buildTimeValues=("--values" "src/main/helm/values-${phase}.yaml")
 [ -n "${value_file}" ] && [ -r "${value_file}" ] && buildTimeValues+=("--values" "${value_file}")
 
 set -vx
-if [ "${dry_run:-false}" = "false" ]; then
-  /usr/local/bin/kubectl create namespace "${namespace}" --dry-run=client -o yaml |
-    /usr/local/bin/kubectl apply -f -
-
-  /usr/local/bin/kubectl get secret ghcr-secret --namespace=default -o json |
-    /usr/local/bin/jq 'del(.metadata["namespace","creationTimestamp","resourceVersion","selfLink","uid"])' |
-    /usr/local/bin/kubectl apply --namespace="${namespace}" -f -
-fi
-
 /usr/local/bin/helm upgrade --install --render-subchart-notes \
   ${dry_run:+--dry-run} ${verbose:+--debug} "${waitOrAtomic[@]}" \
   --create-namespace --namespace "${namespace}" \

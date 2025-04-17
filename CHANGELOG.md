@@ -18,7 +18,12 @@ Categories, defined in [changemap.json](.github/clq/changemap.json):
   - `Fixed` for any bugfixes.
   - `Security` in case of vulnerabilities.
 
-## [2.2.0] - 2025-04-16
+## [3.0.0] - 2025-04-17
+
+### Changed
+
+- Stop creating the namespace and manually copying the image pull secret to it; it is now the responsibility of the ExternalSecret
+  to handle this.
 
 ### Added
 
