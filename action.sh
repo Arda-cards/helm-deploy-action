@@ -50,6 +50,9 @@ for i in "$@"; do
   TIMEOUT=*)
     readonly timeout="${i#*=}"
     ;;
+  VALUE_FILE=*)
+    readonly value_file="${i#*=}"
+    ;;
   # if VERBOSE is true, create the variable, otherwise recognize that it exists but without creating the variable
   # Overridden by GitHub Workflow's verbosity
   VERBOSE=true)
@@ -85,21 +88,14 @@ else
   waitOrAtomic+=("--atomic" "--cleanup-on-fail")
 fi
 
-set -vx
-if [ "${dry_run:-false}" = "false" ]; then
-  /usr/local/bin/kubectl create namespace "${namespace}" --dry-run=client -o yaml |
-    /usr/local/bin/kubectl apply -f -
-
-  /usr/local/bin/kubectl get secret ghcr-secret --namespace=default -o json |
-    /usr/local/bin/jq 'del(.metadata["namespace","creationTimestamp","resourceVersion","selfLink","uid"])' |
-    /usr/local/bin/kubectl apply --namespace="${namespace}" -f -
-fi
+buildTimeValues=("--values" "src/main/helm/values-${phase}.yaml")
+[ -n "${value_file}" ] && [ -r "${value_file}" ] && buildTimeValues+=("--values" "${value_file}")
 
 /usr/local/bin/helm upgrade --install --render-subchart-notes \
   ${dry_run:+--dry-run} ${verbose:+--debug} "${waitOrAtomic[@]}" \
-  --namespace "${namespace}" \
+  --create-namespace --namespace "${namespace}" \
   --timeout "${timeout}" \
-  --values "src/main/helm/values-${phase}.yaml" \
+  "${buildTimeValues[@]}" \
   --set "global.CLUSTER_IAM=arn:aws:iam::${cluster_iam}" --set "global.AWS_REGION=${aws_region}" \
   --set "global.phase=${phase}" \
   --version "${chart_version}" "${module_name}" "${helm_registry}/${chart_name}"
