@@ -91,7 +91,6 @@ fi
 buildTimeValues=("--values" "src/main/helm/values-${phase}.yaml")
 [ -n "${value_file}" ] && [ -r "${value_file}" ] && buildTimeValues+=("--values" "${value_file}")
 
-set -vx
 /usr/local/bin/helm upgrade --install --render-subchart-notes \
   ${dry_run:+--dry-run} ${verbose:+--debug} "${waitOrAtomic[@]}" \
   --create-namespace --namespace "${namespace}" \

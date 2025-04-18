@@ -25,6 +25,10 @@ Categories, defined in [changemap.json](.github/clq/changemap.json):
 - Stop creating the namespace and manually copying the image pull secret to it; it is now the responsibility of the ExternalSecret
   to handle this.
 
+### Removed
+
+- Remove the `-xv` before the call to helm. There is a single toggle of the shell trace and verbose mode, controlled by the action's verbose parameter.
+
 ### Added
 
 - New optional parameter `value_file`; use it to add a value file to the helm deployment command.
