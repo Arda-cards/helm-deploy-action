@@ -33,6 +33,7 @@ Categories, defined in [changemap.json](.github/clq/changemap.json):
 ### Fixed
 
 - Rely on branch protection rule, not branch name.
+- Skip all work on draft pull requests.
 
 ## [3.0.0] - 2025-04-17
 
