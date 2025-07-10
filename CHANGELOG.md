@@ -23,12 +23,12 @@ Categories, defined in [changemap.json](.github/clq/changemap.json):
 ### Changed
 
 - Helm's [Naming Conventions](https://helm.sh/docs/chart_best_practices/values/#naming-conventions): «Variable names should begin with a lowercase letter, and words should be separated with camelcase.»
-- Renamed _phase_ to _purpose_.
-- Renamed _module_ to _component_.
+- Renamed *phase* to *purpose*.
+- Renamed *module* to *component*.
 
 ### Added
 
-- New global value _environment_, which is pass through for the action's input of the same name.
+- New global value *environment*, which is pass through for the action's input of the same name.
 
 ## [3.0.0] - 2025-04-17
 
