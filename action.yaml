@@ -70,7 +70,7 @@ runs:
     - "GITHUB_TOKEN=${{ inputs.github_token }}"
     - "HELM_REGISTRY=${{ inputs.helm_registry }}"
     - "NAMESPACE=${{ inputs.namespace && inputs.namespace || format('{0}-{1}', inputs.purpose, inputs.module_name ) }}"
-    - "PURPOSE=${{ inputs.phase }}"
+    - "PURPOSE=${{ inputs.purpose }}"
     - "TIMEOUT=${{ inputs.timeout }}"
     - "VALUE_FILE=${{ inputs.value_file }}"
     - "VERBOSE=${{ inputs.verbose }}"
