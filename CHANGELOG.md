@@ -30,6 +30,10 @@ Categories, defined in [changemap.json](.github/clq/changemap.json):
 
 - New global value *environment*, which is pass through for the action's input of the same name.
 
+### Fixed
+
+- Rely on branch protection rule, not branch name.
+
 ## [3.0.0] - 2025-04-17
 
 ### Changed
