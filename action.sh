@@ -26,26 +26,29 @@ for i in "$@"; do
   CLUSTER_NAME=*)
     readonly cluster_name="${i#*=}"
     ;;
+  COMPONENT_NAME=*)
+    readonly component_name="${i#*=}"
+    ;;
   # if DRY_RUN is true, create the variable, otherwise recognize that it exists but without creating the variable
   DRY_RUN=true)
     readonly dry_run=true
     ;;
   DRY_RUN=*) ;;
 
+  ENVIRONMENT=*)
+    readonly environment="${i#*=}"
+    ;;
   GITHUB_TOKEN=*)
     readonly github_token="${i#*=}"
     ;;
   HELM_REGISTRY=*)
     readonly helm_registry="${i#*=}"
     ;;
-  MODULE_NAME=*)
-    readonly module_name="${i#*=}"
-    ;;
   NAMESPACE=*)
     readonly namespace="${i#*=}"
     ;;
-  PHASE=*)
-    readonly phase="${i#*=}"
+  PURPOSE=*)
+    readonly purpose="${i#*=}"
     ;;
   TIMEOUT=*)
     readonly timeout="${i#*=}"
@@ -76,7 +79,7 @@ cluster_iam=$(
 
 echo "${github_token}" | helm registry login ghcr.io -u $ --password-stdin
 
-echo "🚀🚀🚀 Upgrading ${phase} in ${cluster_name} 🚀🚀🚀"
+echo "🚀🚀🚀 Upgrading ${purpose} in ${cluster_name} 🚀🚀🚀"
 echo "${chart_name}:${chart_version}"
 [ "${dry_run:-false}" = "false" ] && echo "🟧🟧🟧 dry run 🟧🟧🟧"
 echo "🚀🚀🚀 ==================== 🚀🚀🚀"
@@ -88,14 +91,15 @@ else
   waitOrAtomic+=("--atomic" "--cleanup-on-fail")
 fi
 
-buildTimeValues=("--values" "src/main/helm/values-${phase}.yaml")
-[ -n "${value_file}" ] && [ -r "${value_file}" ] && buildTimeValues+=("--values" "${value_file}")
+values=("--values" "src/main/helm/values-${purpose}.yaml")
+[ -n "${value_file}" ] && [ -r "${value_file}" ] && values+=("--values" "${value_file}")
+[ -n "${environment}" ] && values+=("--set" "global.environment=${environment}")
 
 /usr/local/bin/helm upgrade --install --render-subchart-notes \
   ${dry_run:+--dry-run} ${verbose:+--debug} "${waitOrAtomic[@]}" \
   --create-namespace --namespace "${namespace}" \
   --timeout "${timeout}" \
-  "${buildTimeValues[@]}" \
-  --set "global.CLUSTER_IAM=arn:aws:iam::${cluster_iam}" --set "global.AWS_REGION=${aws_region}" \
-  --set "global.phase=${phase}" \
-  --version "${chart_version}" "${module_name}" "${helm_registry}/${chart_name}"
+  "${values[@]}" \
+  --set "global.clusterIam=arn:aws:iam::${cluster_iam}" --set "global.awsRegion=${aws_region}" \
+  --set "global.purpose=${purpose}" \
+  --version "${chart_version}" "${component_name}" "${helm_registry}/${chart_name}"

@@ -1,20 +1,20 @@
 # helm-deploy-action
 
-The deployment process for a module.
+The deployment process for a component.
 
 ## Assumptions
 
-There is one module per deployable GitHub repository, which is packaged as one helm Chart.
-The module might have submodules, whose charts are aggregated into the main top-level chart.
+There is one component per deployable GitHub repository, which is packaged as one helm Chart.
+The component might have submodules, whose charts are aggregated into the main top-level chart.
 
-During the continuous deployment pipeline, this action will need to deploy each phase independently.
+During the continuous deployment pipeline, this action will need to deploy each purpose independently.
 
-The phases can map to one or many aws accounts and clusters.
+The purposes can map to one or many aws accounts and clusters.
 
-In order to support the case of all phases into a single cluster, a module is deployed to a namespace that identify both the module and the phase.
-The naming pattern will be `<phase>-<module name>`.
+In order to support the case of all purposes into a single cluster, a component is deployed to a namespace that identify both the component and the purpose.
+The naming pattern will be `<purpose>-<component name>`.
 
-This action expects configuration values for the chart for the *phase* in `src/main/helm/values-${phase}.yaml`.
+This action expects configuration values for the chart for the *purpose* in `src/main/helm/values-${purpose}.yaml`.
 
 This action supports a 2nd configuration values to be used. This is extending, not replacing, the default value files and is
 intended for deployment pipeline tha need to extract values from their environment at deployment time.
@@ -29,9 +29,9 @@ Helm deploys a *chart* to a *namespace* and names that a *release*, which is how
 
 The name of the chart is the required parameter `chart_name`.
 
-The name of the release is the required parameter `module_name`.
+The name of the release is the required parameter `component_name`.
 
-The name of the namespace is the concatenation of the `phase` and the `module_name`.
+The name of the namespace is the concatenation of the `purpose` and the `component_name`.
 
 ## Usage
 
@@ -59,8 +59,8 @@ jobs:
           cluster_name: ${{ vars.AWS_CLUSTER_NAME }}
           github_token: ${{ github.token }}
           helm_registry: ${{ vars.HELM_REGISTRY }}
-          module_name: <insert your module name here>
-          phase: "prod"
+          component_name: <insert your component name here>
+          purpose: "prod"
 ```
 
 ## Permission Required
