@@ -11,7 +11,7 @@ During the continuous deployment pipeline, this action will need to deploy each 
 
 Each purpose will map to one or multiple `Environment`s, identifying particular `Infrastructure` and `Partition` combinations.
 
-In order to support the case of all purposes into a single cluster, a component is deployed to a namespace that identify both the component and the purpose.
+In order to support the case of purposes deploying to `Partition`s that share an `Infrastructure`, and therefore deploy their components into a single K8s cluster, a component is deployed to a namespace that identify both the component and the purpose.
 The naming pattern will be `<purpose>-<component name>`.
 
 This action expects configuration values for the chart for the *purpose* in `src/main/helm/values-${purpose}.yaml`.
