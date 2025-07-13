@@ -9,7 +9,7 @@ The component might have submodules, whose charts are aggregated into the main t
 
 During the continuous deployment pipeline, this action will need to deploy each purpose independently.
 
-The purposes can map to one or many aws accounts and clusters.
+Each purpose will map to one or multiple `Environment`s, identifying particular `Infrastructure` and `Partition` combinations.
 
 In order to support the case of all purposes into a single cluster, a component is deployed to a namespace that identify both the component and the purpose.
 The naming pattern will be `<purpose>-<component name>`.
