@@ -4,7 +4,7 @@ The deployment process for a component.
 
 ## Assumptions
 
-There is one component per deployable GitHub repository, which is packaged as one helm Chart.
+There is one component per deployable GitHub repository, which is packaged as one helm Chart. And optionally a `pre-deploy.cfn.yml` and a `post-deploy.cfn.yml` Cloud Formation templates to configure required AWS resources.
 The component might have submodules, whose charts are aggregated into the main top-level chart.
 
 During the continuous deployment pipeline, this action will need to deploy each purpose independently.
