@@ -1,6 +1,9 @@
 # helm-deploy-action
 
-The deployment process for a component.
+[![ci](https://github.com/Arda-cards/helm-deploy-action/actions/workflows/ci.yaml/badge.svg?branch=main)](https://github.com/Arda-cards/helm-deploy-action/actions/workflows/ci.yaml?query=branch%3Amain)
+[CHANGELOG.md](CHANGELOG.md)
+
+Given a component, applies necessary infrastructure changes and deploys its chart.
 
 ## Assumptions
 
