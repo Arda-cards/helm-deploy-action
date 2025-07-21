@@ -34,6 +34,7 @@ Categories, defined in [changemap.json](.github/clq/changemap.json):
 
 - Rely on branch protection rule, not branch name.
 - Skip all work on draft pull requests.
+- Bump super-linter from 7 to 9
 
 ## [3.0.0] - 2025-04-17
 
