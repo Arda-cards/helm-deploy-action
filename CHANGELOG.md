@@ -1,7 +1,7 @@
 # changelog
 
 [![Keep a Changelog](https://img.shields.io/badge/Keep%20a%20Changelog-1.0.0-informational)](https://keepachangelog.com/en/1.0.0/)
-[![Semantic Versioning](https://img.shields.io/badge/Sematic%20Versioning-2.0.0-informational)](https://semver.org/spec/v2.0.0.html)
+[![Semantic Versioning](https://img.shields.io/badge/Semantic%20Versioning-2.0.0-informational)](https://semver.org/spec/v2.0.0.html)
 ![clq validated](https://img.shields.io/badge/clq-validated-success)
 
 Keep the newest entry at top, format date according to ISO 8601: `YYYY-MM-DD`.
@@ -17,6 +17,24 @@ Categories, defined in [changemap.json](.github/clq/changemap.json):
 - *bugfix* release trigger:
   - `Fixed` for any bugfixes.
   - `Security` in case of vulnerabilities.
+
+## [4.0.0] - 2025-07-10
+
+### Changed
+
+- Helm's [Naming Conventions](https://helm.sh/docs/chart_best_practices/values/#naming-conventions): «Variable names should begin with a lowercase letter, and words should be separated with camelcase.»
+- Renamed *phase* to *purpose*.
+- Renamed *module* to *component*.
+
+### Added
+
+- New global value *environment*, which is pass through for the action's input of the same name.
+
+### Fixed
+
+- Rely on branch protection rule, not branch name.
+- Skip all work on draft pull requests.
+- Bump super-linter from 7 to 8
 
 ## [3.0.0] - 2025-04-17
 
