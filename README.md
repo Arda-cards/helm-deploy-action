@@ -3,7 +3,7 @@
 [![ci](https://github.com/Arda-cards/helm-deploy-action/actions/workflows/ci.yaml/badge.svg?branch=main)](https://github.com/Arda-cards/helm-deploy-action/actions/workflows/ci.yaml?query=branch%3Amain)
 [CHANGELOG.md](CHANGELOG.md)
 
-Given a component, applies necessary infrastructure changes and deploys its chart.
+Given a component, applies necessary partition changes and deploys its chart.
 
 ## Assumptions
 
@@ -17,12 +17,12 @@ Each purpose will map to one or multiple `Environment`s, identifying particular 
 
 In order to support the case of purposes deploying to `Partition`s that share an `Infrastructure`, and therefore deploy their
 components into a single Kubernetes cluster, a component is deployed to a namespace that identify both the purpose and the component.
-The naming pattern will be `<purpose>-<component name>`.
+The naming pattern will be *purpose*`-`*component name*`.
 
 This action expects configuration values for the chart for the *purpose* in `src/main/helm/values-${purpose}.yaml`.
 
 This action supports a 2nd configuration values to be used. This is extending, not replacing, the default value files and is
-intended for deployment pipelines that need to extract values from their environment at deployment time.
+intended for deployment pipelines that need to extract values from their partition at deployment time.
 
 ## Arguments
 
@@ -36,7 +36,7 @@ The name of the chart is the required parameter `chart_name`.
 
 The name of the release is the required parameter `component_name`.
 
-The name of the namespace is the concatenation of the `purpose` and the `component_name`.
+The default name of the namespace is the concatenation of the `purpose` and the `component_name`.
 
 ## Usage
 
@@ -64,7 +64,7 @@ jobs:
           cluster_name: ${{ vars.AWS_CLUSTER_NAME }}
           github_token: ${{ github.token }}
           helm_registry: ${{ vars.HELM_REGISTRY }}
-          component_name: <insert your component name here>
+          component_name: *insert your component name here*
           purpose: "prod"
 ```
 

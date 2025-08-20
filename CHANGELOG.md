@@ -18,11 +18,15 @@ Categories, defined in [changemap.json](.github/clq/changemap.json):
   - `Fixed` for any bugfixes.
   - `Security` in case of vulnerabilities.
 
-## [4.1.0] - 2025-08-20
+## [5.0.0] - 2025-08-20
 
-### Deprecated
+### Changed
 
-- Helm values `global.clusterIam` and `global.environment` will be removed with the next major release.
+- Runs with pre-installed version of jq, aws-cli and helm; this is not a docker image anymore
+
+### Removed
+
+- Helm values `global.clusterIam` and `global.environment`.
 
 ## [4.0.0] - 2025-07-10
 
