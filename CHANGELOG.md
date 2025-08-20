@@ -18,6 +18,12 @@ Categories, defined in [changemap.json](.github/clq/changemap.json):
   - `Fixed` for any bugfixes.
   - `Security` in case of vulnerabilities.
 
+## [4.1.0] - 2025-08-20
+
+### Deprecated
+
+- Helm values `global.clusterIam` and `global.environment` will be removed with the next major release.
+
 ## [4.0.0] - 2025-07-10
 
 ### Changed

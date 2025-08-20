@@ -29,6 +29,7 @@ inputs:
   environment:
     description: "Value for Helm global.environment"
     required: false
+    deprecationMessage: "The value is not used anymore"
     default: ""
   github_token:
     description: "The authentication token"
