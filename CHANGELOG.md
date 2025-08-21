@@ -22,7 +22,7 @@ Categories, defined in [changemap.json](.github/clq/changemap.json):
 
 ### Changed
 
-- Runs with pre-installed version of jq, aws-cli and helm; this is not a docker image anymore
+- Runs with pre-installed version of jq, aws-cli and helm; this is not a Docker image anymore
 
 ### Added
 
