@@ -18,6 +18,24 @@ Categories, defined in [changemap.json](.github/clq/changemap.json):
   - `Fixed` for any bugfixes.
   - `Security` in case of vulnerabilities.
 
+## [5.0.0] - 2025-08-20
+
+### Changed
+
+- Runs with pre-installed version of jq, aws-cli and helm; this is not a Docker image anymore
+
+### Added
+
+- Display the version of aws, helm, jq, kubectl
+
+### Removed
+
+- Helm values `global.clusterIam` and `global.environment`.
+
+### Fixed
+
+- Bump actions/checkout from 4 to 5
+
 ## [4.0.0] - 2025-07-10
 
 ### Changed

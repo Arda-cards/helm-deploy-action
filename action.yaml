@@ -20,16 +20,12 @@ inputs:
     required: true
   component_name:
     description: "The name of the component being deployed, it is the helm release name;
-                  it also serves as the default base name for the kubernetes namespace. "
+                  it also serves as the default base name for the kubernetes namespace."
     required: true
   dry_run:
     description: "Set to true to perform a helm dry-run deployment"
     required: false
     default: "false"
-  environment:
-    description: "Value for Helm global.environment"
-    required: false
-    default: ""
   github_token:
     description: "The authentication token"
     required: true
@@ -56,21 +52,67 @@ inputs:
     required: false
     default: "false"
 runs:
-  using: "docker"
-  image: "Dockerfile"
-  args:
-    - "AWS_REGION=${{ inputs.aws_region }}"
-    - "CHART_NAME=${{ inputs.chart_name }}"
-    - "CHART_VERSION=${{ inputs.chart_version }}"
-    - "CLEAN_UP=${{ inputs.clean_up }}"
-    - "CLUSTER_NAME=${{ inputs.cluster_name }}"
-    - "COMPONENT_NAME=${{ inputs.component_name }}"
-    - "DRY_RUN=${{ inputs.dry_run }}"
-    - "ENVIRONMENT=${{ inputs.environment }}"
-    - "GITHUB_TOKEN=${{ inputs.github_token }}"
-    - "HELM_REGISTRY=${{ inputs.helm_registry }}"
-    - "NAMESPACE=${{ inputs.namespace && inputs.namespace || format('{0}-{1}', inputs.purpose, inputs.module_name ) }}"
-    - "PURPOSE=${{ inputs.purpose }}"
-    - "TIMEOUT=${{ inputs.timeout }}"
-    - "VALUE_FILE=${{ inputs.value_file }}"
-    - "VERBOSE=${{ inputs.verbose }}"
+  using: "composite"
+  steps:
+    - name: "Tools version"
+      shell: bash
+      run: |
+        echo "aws"
+        aws --version
+        echo
+        echo "helm"
+        helm version
+        echo
+        echo "jq"
+        jq --version
+        echo
+        echo "kubectl"
+        kubectl version --client=true
+    - name: "Deploying ${{ inputs.chart_name }}:${{ inputs.chart_version }} for ${{ inputs.purpose }}"
+      shell: bash
+      run: |
+        if [ "${RUNNER_DEBUG}" == 1 ]; then
+          set -xv
+          readonly verbose=true
+        elif [ "${{ inputs.verbose }}" = "true" ]; then
+          readonly verbose=true
+        fi
+        set -u
+        
+        readonly namespace="${{ inputs.namespace && inputs.namespace || format('{0}-{1}', inputs.purpose, inputs.component_name ) }}"
+        
+        [ "${verbose:-false}" = "true" ] && aws sts get-caller-identity
+        
+        aws eks --region "${{ inputs.aws_region }}" update-kubeconfig --name "${{ inputs.cluster_name }}"
+        
+        echo "${{ inputs.github_token }}" | helm registry login ghcr.io -u $ --password-stdin
+        
+        echo "🚀🚀🚀 Upgrading ${{ inputs.purpose }} in ${{ inputs.cluster_name }} 🚀🚀🚀"
+        echo "${{ inputs.chart_name }}:${{ inputs.chart_version }}"
+        echo "🚀🚀🚀 ==================== 🚀🚀🚀"
+        
+        options=()
+        if [ "${{ inputs.clean_up }}" = "true" ]; then
+          options+=("--atomic" "--cleanup-on-fail")
+        else
+          options+=("--wait")
+        fi
+        if [ "${{ inputs.dry_run }}" = "true" ]; then
+          echo "🟧🟧🟧 dry run 🟧🟧🟧"
+          options+=("--dry-run")
+        fi
+        [ "${{ inputs.verbose }}" = "true" ] && options+=("--debug")
+        
+        values=("--values" "src/main/helm/values-${{ inputs.purpose }}.yaml")
+        [ -n "${{ inputs.value_file }}" ] && [ -r "${{ inputs.value_file }}" ] && values+=("--values" "${{ inputs.value_file }}")
+      
+        helm upgrade --install --render-subchart-notes \
+          "${options[@]}" \
+          --version "${{ inputs.chart_version }}" \
+          --create-namespace --namespace "${namespace}" \
+          --timeout "${{ inputs.timeout }}" \
+          "${values[@]}" \
+          --set "global.awsRegion=${{ inputs.aws_region }}" \
+          --set "global.purpose=${{ inputs.purpose }}" \
+          "${{ inputs.component_name }}" "${{ inputs.helm_registry }}/${{ inputs.chart_name }}"
+
