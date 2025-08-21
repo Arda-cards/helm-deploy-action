@@ -54,6 +54,20 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: "Tools version"
+      shell: bash
+      run: |
+        echo "aws"
+        aws --version
+        echo
+        echo "helm"
+        helm version
+        echo
+        echo "jq"
+        jq --version
+        echo
+        echo "kubectl"
+        kubectl version --client=true
     - name: "Deploying ${{ inputs.chart_name }}:${{ inputs.chart_version }} for ${{ inputs.purpose }}"
       shell: bash
       run: |

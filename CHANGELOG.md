@@ -24,6 +24,10 @@ Categories, defined in [changemap.json](.github/clq/changemap.json):
 
 - Runs with pre-installed version of jq, aws-cli and helm; this is not a docker image anymore
 
+### Added
+
+- Display the version of aws, helm, jq, kubectl
+
 ### Removed
 
 - Helm values `global.clusterIam` and `global.environment`.
