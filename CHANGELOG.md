@@ -32,6 +32,10 @@ Categories, defined in [changemap.json](.github/clq/changemap.json):
 
 - Helm values `global.clusterIam` and `global.environment`.
 
+### Fixed
+
+- Bump actions/checkout from 4 to 5
+
 ## [4.0.0] - 2025-07-10
 
 ### Changed
